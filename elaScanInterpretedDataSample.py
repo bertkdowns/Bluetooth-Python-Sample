@@ -18,6 +18,7 @@ class ScanDelegate(DefaultDelegate):
 
 ## associate the delegate to the scanner and start it for 10.0 seconds
 scanner = Scanner().withDelegate(ScanDelegate())
+
 devices = scanner.scan(10.0)
 
 ## display result get from scanner
@@ -25,4 +26,4 @@ for dev in devices:
     if( isinstance(dev.rawData, bytes)):
         print("Device %s (%s), RSSI=%d dB, Interpreted ELA Data=%s, RawData=%s" % (dev.addr, dev.addrType, dev.rssi, Tagfactory.getInstance().getTag(dev.rawData).formattedDataSensor ,binascii.b2a_hex(dev.rawData).decode('ascii')))
         for (adtype, desc, value) in dev.getScanData():
-            print("  %s = %s" % (desc, value))
+            print("%s  %s = %s" % (adtype, desc, value))

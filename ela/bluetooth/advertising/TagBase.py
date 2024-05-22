@@ -50,3 +50,8 @@ class TagBase:
                 pass
             ## fin implement parsing
             self.formattedDataBattery = result
+    
+    def fields(self):
+        """Returns a dictionary with key-value pairs of data field values"""
+        return {}
+    

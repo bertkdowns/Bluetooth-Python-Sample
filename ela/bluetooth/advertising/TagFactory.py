@@ -51,27 +51,27 @@ class Tagfactory:
         if( isinstance(payload, bytes)):
             tempString = binascii.b2a_hex(tag.payload).decode('ascii')
             if( (UUID_SERVICE_HUMIDITY in tempString) and (UUID_SERVICE_TEMPERATURE in tempString) ):
-                print("Debug Tag RHT FOUND")
+                #print("Debug Tag RHT FOUND")
                 tag = TagRHT(payload)
             elif( UUID_SERVICE_TEMPERATURE in tempString):
-                print("Debug Tag Temperature FOUND")
+                #print("Debug Tag Temperature FOUND")
                 tag = TagTemperature(payload)
             elif( UUID_SERVICE_MAG in tempString):
-                print("Debug Tag Mag FOUND")
+                #print("Debug Tag Mag FOUND")
                 tag = TagMag(payload)
             elif( UUID_SERVICE_MOV in tempString):
-                print("Debug Tag Mov FOUND")
+                #print("Debug Tag Mov FOUND")
                 tag = TagMov(payload)
             elif( UUID_SERVICE_ANG in tempString):
-                print("Debug Tag Ang FOUND")
+                #print("Debug Tag Ang FOUND")
                 tag = TagAng(payload)
             elif( UUID_SERVICE_DI in tempString):
-                print("Debug Tag DI FOUND")
+                #print("Debug Tag DI FOUND")
                 tag = TagDI(payload)
             elif( UUID_SERVICE_AI in tempString):
-                print("Debug Tag AI  FOUND")
+                #print("Debug Tag AI  FOUND")
                 tag = TagAI(payload)
             elif( UUID_SERVICE_DO in tempString):
-                print("Debug Tag DO  FOUND")
+                #print("Debug Tag DO  FOUND")
                 tag = TagDO(payload)
         return tag
