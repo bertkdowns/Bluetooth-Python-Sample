@@ -1,5 +1,6 @@
 ela/bluetooth/__pycache__
 ela/bluetooth/advertising/__pycache__
 ela/bluetooth/connect/__pycache__
-.mypy/cache
+.mypy_cache
 .env
+__pycache__
