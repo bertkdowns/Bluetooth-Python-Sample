@@ -1,0 +1,1 @@
+openapi-generator-cli generate -i ../Ahuora-Adaptive-Digital-Twin-Platform/FrontEnd/src/api/api_schema.yml -g python -o openapi

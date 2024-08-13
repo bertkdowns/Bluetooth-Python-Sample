@@ -4,3 +4,4 @@ ela/bluetooth/connect/__pycache__
 .mypy_cache
 .env
 __pycache__
+openapi/
