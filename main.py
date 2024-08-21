@@ -1,38 +1,52 @@
-
-# https://docs.influxdata.com/influxdb/v2/api-guide/client-libraries/python/
-import influxdb_client
-from influxdb_client.client.write_api import SYNCHRONOUS
 from PyP100 import PyP110
 from bluepy.btle import Scanner, DefaultDelegate
 from ela.bluetooth.advertising.TagFactory import Tagfactory
 from dotenv import load_dotenv
+from ahuora.flowsheet import Flowsheet
 import os
 
 load_dotenv()
 
 sensor_locations = {
-    "P RHT 904C92": "Air-Dryer_out-Evap-in",
-    "P RHT 904C90": "Air-Cond_out-Dryer_in",
-    "P TPROBE 0021F9": "Air-Evap_out-Cond_in",
-    "P TPROBE 0021F8": "Prop-Compressor_out-Cond_in",
-    "P TPROBE 0021F7": "Prop-Evap_out-Compressor_in"
+    "P RHT 904C92": {
+        "label": "Air-Dryer_out-Evap-in",
+        "unitop": "air_dryer",
+        "propkey": None,
+    },
+    "P RHT 904C90": {
+        "label": "Air-Cond_out-Dryer_in",
+        "unitop": "cond_air_out",
+        "propkey": None,
+    },
+    "P TPROBE 0021F9": { 
+        "label": "Air-Evap_out-Cond_in",
+        "unitop": "evap_air_out",
+        "propkey": None,
+    },
+    "P TPROBE 0021F8": {
+        "label": "Prop-Compressor_out-Cond_in",
+        "unitop": "compr_prop_out",
+        "propkey": None,
+    },
+    "P TPROBE 0021F7": {
+        "label": "Prop-Evap_out-Compressor_in",
+        "unitop": "evap_prop_out",
+        "propkey": None,
+    },
+    "Energy": {
+        "label": "Total Power",
+        "unitop": "compressor",
+        "propkey": None,
+    },
 }
 
-# -------------- INFLUX DB SETUP ----------------------
+# ----------------- Flowsheet Setup --------------------
 
-bucket = os.getenv('INFLUX_BUCKET')
-org = os.getenv('INFLUX_ORG')
-token = os.getenv('INFLUX_TOKEN')
-# Store the URL of your InfluxDB instance
-url=os.getenv('INFLUX_URL')
+api = Flowsheet()
 
-client = influxdb_client.InfluxDBClient(
-   url=url,
-   token=token,
-   org=org
-)
+for key, value in sensor_locations.items():
+    sensor_locations[key].id = api.get_property_id(value["unitop"],value["propkey"])
 
-write_api = client.write_api(write_options=SYNCHRONOUS)
 
 # ---------------- BLUETOOTH SETUP --------------------
 
@@ -67,7 +81,7 @@ p110.login() #Sends credentials to the plug and creates AES Key and IV for furth
 # -------------- MAIN LOOP ------------------------------
 while True:
     print("Scanning")
-    devices = scanner.scan(5.0)
+    devices = scanner.scan(60.0)
 
     # ----------------- DATA PROCESSING ------------------
 
@@ -95,10 +109,9 @@ while True:
                     print(name + " not registered as a location, skipping")
                     continue
                 location = sensor_locations[name]
-                p = influxdb_client.Point(measurement).tag("name",name).tag("location",location).field("value",value)
-                write_api.write(bucket=bucket, org=org, record=p)
+                api.update_property(location.id, value)
     
     # Print the info from the tapo plug
     energy = p110.getEnergyUsage()
-    p = influxdb_client.Point("current_power").tag("name","Tapo p110").tag("location","Wall Plug").field("value",energy['current_power'])
-    write_api.write(bucket=bucket, org=org, record=p)
+    location = sensor_locations["Energy"]
+    api.update_property(location.id, energy["current_power"])
