@@ -1,6 +1,7 @@
-from openapi.openapi_client.models.solve_request import SolveRequest
-from openapi.openapi_client.rest import ApiException
-from openapi.openapi_client import ApiClient
+from openapi_client.models.solve_request import SolveRequest
+from openapi_client.rest import ApiException
+from openapi_client import ApiClient
+import openapi_client
 from pprint import pprint
 
 
@@ -9,13 +10,15 @@ class Flowsheet():
         self.configuration = configuration
         self.id = id
         with ApiClient(configuration) as api_client:
-            unitops_api = api_client.UnitopsApi()
+            unitops_api = openapi_client.UnitopsApi(api_client)
             try:
+                print("Getting Unit Ops")
                 api_response = unitops_api.unitops_unitops_list(id)
-                self.unitops = api_response.unitops
+                self.unitops = api_response
             except ApiException as e:
                 print("Exception when calling UnitopsApi->unitops_unitops_list: %s\n" % e)
             try:
+                print("Getting Material Streams")
                 api_response = unitops_api.unitops_materialstreams_list(id)
                 self.materialstreams = api_response
             except ApiException as e:
@@ -36,9 +39,9 @@ class Flowsheet():
     
     def update_property(self,id,value):
         with ApiClient(self.configuration) as api_client:
-            core_api = api_client.CoreApi()
+            core_api = openapi_client.CoreApi(api_client)
             try:
-                core_api.propertyinfo_partial_update(id, {
+                core_api.core_propertyinfo_partial_update(id, {
                     value:value
                 })
             except ApiException as e:
@@ -46,7 +49,7 @@ class Flowsheet():
     
     def solve(self):
         with ApiClient(self.configuration) as api_client:
-            solve_api = api_client.SolveApi()
+            solve_api = openapi_client.SolveApi(api_client)
             solve_request = SolveRequest()
             solve_request.flowsheet_id = self.id
             try:
