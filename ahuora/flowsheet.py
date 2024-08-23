@@ -50,10 +50,9 @@ class Flowsheet():
     def solve(self):
         with ApiClient(self.configuration) as api_client:
             solve_api = openapi_client.SolveApi(api_client)
-            solve_request = SolveRequest()
-            solve_request.flowsheet_id = self.id
+            solve_request = SolveRequest(flowsheet_id = self.id)
             try:
-                api_response = solve_api.idaes_create(solve_request)
+                api_response = solve_api.solve_idaes_create(solve_request)
                 pprint(api_response)
             except ApiException as e:
                 print("Exception when calling SolveApi->solve: %s\n" % e)

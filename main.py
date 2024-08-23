@@ -50,7 +50,7 @@ sensor_locations = {
 configuration = openapi_client.Configuration(
     host = "http://localhost:8001"
 )
-FS_ID = 3
+FS_ID = 6
 api = Flowsheet(configuration,FS_ID)
 
 for key, value in sensor_locations.items():
@@ -113,18 +113,25 @@ while True:
             
             # write the data to the db
             for measurement, value in tag.fields().items():
-                print("%s: writing %s:%s" % (name,measurement,value))
+                if measurement != "temperature":
+                    continue # don't write humidity, only temperature
+                
                 if(name not in sensor_locations):
                     print(name + " not registered as a location, skipping")
                     continue
                 location = sensor_locations[name]
                 if location["id"] is None:
                     print("Could not find a propkey")
+                    continue
+                print("%s: writing %s:%s to %s" % (name,measurement,value,location["unitop"]))
                 api.update_property(location["id"], value)
     
     # Print the info from the tapo plug
     energy = p110.getEnergyUsage()
     location = sensor_locations["Energy"]
+    print("Writing Energy:",energy["current_power"])
     api.update_property(location["id"], energy["current_power"])
-
+    print("solving")
+    api.solve()
+    print("done.")
     time.sleep(50)
