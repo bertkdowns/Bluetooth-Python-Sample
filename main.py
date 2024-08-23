@@ -31,7 +31,7 @@ sensor_locations = {
     "P TPROBE 0021F8": {
         "label": "Prop-Compressor_out-Cond_in",
         "unitop": "compressor",
-        "propkey": "PROP_CO_7", # Compressor Outlet Temperature
+        "propkey": "OUTLET_TEMPERATURE", # Compressor Outlet Temperature
     },
     # "P TPROBE 0021F7": {
     #     "label": "Prop-Evap_out-Compressor_in",
