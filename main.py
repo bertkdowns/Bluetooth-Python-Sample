@@ -1,9 +1,14 @@
+import sys
+sys.path.insert(0,"/home/pi/heatpumpdryer-data-collection/openapi")
+
 from PyP100 import PyP110
 from bluepy.btle import Scanner, DefaultDelegate
 from ela.bluetooth.advertising.TagFactory import Tagfactory
 from dotenv import load_dotenv
 from ahuora.flowsheet import Flowsheet
+import openapi_client
 import os
+import time
 
 load_dotenv()
 
@@ -47,10 +52,14 @@ sensor_locations = {
 
 # ----------------- Flowsheet Setup --------------------
 
-api = Flowsheet()
+configuration = openapi_client.Configuration(
+    host = "http://localhost:8001"
+)
+FS_ID = 3
+api = Flowsheet(configuration,FS_ID)
 
 for key, value in sensor_locations.items():
-    sensor_locations[key].id = api.get_property_id(value["unitop"],value["propkey"])
+    sensor_locations[key]["id"] = api.get_property_id(value["unitop"],value["propkey"])
 
 
 # ---------------- BLUETOOTH SETUP --------------------
@@ -86,7 +95,7 @@ p110.login() #Sends credentials to the plug and creates AES Key and IV for furth
 # -------------- MAIN LOOP ------------------------------
 while True:
     print("Scanning")
-    devices = scanner.scan(60.0)
+    devices = scanner.scan(5.0)
 
     # ----------------- DATA PROCESSING ------------------
 
@@ -97,7 +106,7 @@ while True:
             
             # skip devices that aren't ELA tags
             if(tag.formattedDataSensor == "VOID"):
-                continue;
+                continue
             
             # Find the tag name
             name = "UNNAMED"
@@ -114,9 +123,13 @@ while True:
                     print(name + " not registered as a location, skipping")
                     continue
                 location = sensor_locations[name]
-                api.update_property(location.id, value)
+                if location["id"] is None:
+                    print("Could not find a propkey")
+                api.update_property(location["id"], value)
     
     # Print the info from the tapo plug
     energy = p110.getEnergyUsage()
     location = sensor_locations["Energy"]
-    api.update_property(location.id, energy["current_power"])
+    api.update_property(location["id"], energy["current_power"])
+
+    time.sleep(50)
