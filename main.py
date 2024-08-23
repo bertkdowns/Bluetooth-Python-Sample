@@ -28,10 +28,15 @@ sensor_locations = {
         "unitop": "compressor",
         "propkey": "PROP_CO_7", # Compressor Outlet Temperature
     },
+    # "P TPROBE 0021F7": {
+    #     "label": "Prop-Evap_out-Compressor_in",
+    #     "unitop": "evap_prop_out", # input/output of recycle, tear guess. could also be set to evap cold stream outlet temp
+    #     "propkey": "PROP_MS_0",
+    # },
     "P TPROBE 0021F7": {
         "label": "Prop-Evap_out-Compressor_in",
-        "unitop": "evap_prop_out", # input/output of recycle, tear guess. could also be set to evap cold stream outlet temp
-        "propkey": "PROP_MS_0",
+        "unitop": "evaporator", # input/output of recycle, tear guess. could also be set to evap cold stream outlet temp
+        "propkey": "PROP_HX_3", # cold fluid outlet temperature
     },
     "Energy": {
         "label": "Total Power",
