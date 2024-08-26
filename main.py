@@ -16,22 +16,22 @@ sensor_locations = {
     "P RHT 904C92": {
         "label": "Air-Dryer_out-Evap-in",
         "unitop": "evap_air_in",
-        "propkey": "PROP_MS_0", # Temperature
+        "propkey": "PROP_MS_0", # Temperature, used but not relevant
     },
     "P RHT 904C90": {
         "label": "Air-Cond_out-Dryer_in",
         "unitop": "condenser",
-        "propkey": "PROP_HX_3", # Cold Fluid (air) Outlet Temperature
+        "propkey": "PROP_HX_3", # Cold Fluid (air) Outlet Temperature, Not Used (depends on the stream)
     },
     "P TPROBE 0021F9": { 
         "label": "Air-Evap_out-Cond_in",
         "unitop": "evaporator",
-        "propkey": "PROP_HX_4", # Hot Fluid (air) Outlet Temperature 
+        "propkey": "PROP_HX_4", # Hot Fluid (air) Outlet Temperature, Not used (depends on the stream)
     },
     "P TPROBE 0021F8": {
         "label": "Prop-Compressor_out-Cond_in",
         "unitop": "compressor",
-        "propkey": "OUTLET_TEMPERATURE", # Compressor Outlet Temperature
+        "propkey": "OUTLET_TEMPERATURE", # Compressor Outlet Temperature, used as a calculation mode.
     },
     # "P TPROBE 0021F7": {
     #     "label": "Prop-Evap_out-Compressor_in",
@@ -41,12 +41,12 @@ sensor_locations = {
     "P TPROBE 0021F7": {
         "label": "Prop-Evap_out-Compressor_in",
         "unitop": "evaporator", # input/output of recycle, tear guess. could also be set to evap cold stream outlet temp
-        "propkey": "PROP_HX_3", # cold fluid outlet temperature
+        "propkey": "PROP_HX_3", # cold fluid outlet temperature, used as a calculation mode
     },
     "Energy": {
         "label": "Total Power",
         "unitop": "compressor",
-        "propkey": "PROP_CO_3", # Power Required
+        "propkey": "PROP_CO_3", # Power Required, not used.
     },
 }
 
