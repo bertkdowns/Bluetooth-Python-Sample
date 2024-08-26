@@ -20,13 +20,13 @@ sensor_locations = {
     },
     "P RHT 904C90": {
         "label": "Air-Cond_out-Dryer_in",
-        "unitop": "condenser",
-        "propkey": "PROP_HX_3", # Cold Fluid (air) Outlet Temperature, Not Used (depends on the stream)
+        "unitop": "cond_air_out_live",
+        "propkey": "PROP_MS_0", # Cold Fluid (air) Outlet Temperature, Not Used (depends on the stream)
     },
     "P TPROBE 0021F9": { 
         "label": "Air-Evap_out-Cond_in",
-        "unitop": "evaporator",
-        "propkey": "PROP_HX_4", # Hot Fluid (air) Outlet Temperature, Not used (depends on the stream)
+        "unitop": "evap_air_out_live",
+        "propkey": "PROP_MS_0", # Hot Fluid (air) Outlet Temperature, not used but stored (depends on stream)
     },
     "P TPROBE 0021F8": {
         "label": "Prop-Compressor_out-Cond_in",
@@ -45,8 +45,8 @@ sensor_locations = {
     },
     "Energy": {
         "label": "Total Power",
-        "unitop": "compressor",
-        "propkey": "PROP_CO_3", # Power Required, not used.
+        "unitop": "power_required",
+        "propkey": "PROP_MS_3", # Power Required, not used. Stored in a material stream for now ;)
     },
 }
 
