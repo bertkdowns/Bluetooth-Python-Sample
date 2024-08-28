@@ -15,7 +15,7 @@ load_dotenv()
 sensor_locations = {
     "P RHT 904C92": {
         "label": "Air-Dryer_out-Evap-in",
-        "unitop": "evap_air_in",
+        "unitop": "evap_air_in_live",
         "propkey": "PROP_MS_0", # Temperature, used but not relevant
     },
     "P RHT 904C90": {
@@ -26,7 +26,7 @@ sensor_locations = {
     "P TPROBE 0021F9": { 
         "label": "Air-Evap_out-Cond_in",
         "unitop": "evap_air_out_live",
-        "propkey": "PROP_MS_0", # Hot Fluid (air) Outlet Temperature, not used but stored (depends on stream)
+        "propkey": "PROP_MS_0", # Not used (but the inlet air temperature of the condenser is approx. equal to the outlet propane temperature of the condenser
     },
     "P TPROBE 0021F8": {
         "label": "Prop-Compressor_out-Cond_in",
@@ -41,7 +41,7 @@ sensor_locations = {
     "P TPROBE 0021F7": {
         "label": "Prop-Evap_out-Compressor_in",
         "unitop": "evaporator", # input/output of recycle, tear guess. could also be set to evap cold stream outlet temp
-        "propkey": "PROP_HX_3", # cold fluid outlet temperature, used as a calculation mode
+        "propkey": "PROP_HT_2", # outlet temperature, used as a calculation mode
     },
     "Energy": {
         "label": "Total Power",
