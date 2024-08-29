@@ -55,7 +55,7 @@ sensor_locations = {
 configuration = openapi_client.Configuration(
     host = "http://localhost:8001"
 )
-FS_ID = 6
+FS_ID = 8
 api = Flowsheet(configuration,FS_ID)
 
 for key, value in sensor_locations.items():
