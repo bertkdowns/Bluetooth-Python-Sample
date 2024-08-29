@@ -128,15 +128,18 @@ while True:
                 if location["id"] is None:
                     print("Could not find a propkey")
                     continue
-                print("%s: writing %s:%s to %s" % (name,measurement,value,location["unitop"]))
-                api.update_property(location["id"], value)
+                print("%s: writing %s:%s to %s : %s" % (name,measurement,value,location["unitop"], location["id"]))
+                api.update_property(location["id"], str(value))
     
     # Print the info from the tapo plug
-    energy = p110.getEnergyUsage()
-    location = sensor_locations["Energy"]
-    print("Writing Energy:",energy["current_power"])
-    api.update_property(location["id"], energy["current_power"])
+    try:
+        energy = p110.getEnergyUsage()
+        location = sensor_locations["Energy"]
+        print("Writing Energy:",energy["current_power"], ": ", location["id"])
+        api.update_property(location["id"], str(energy["current_power"]))
+    except Exception as e:
+        print("failed to get Energy data")
     print("solving")
     api.solve()
     print("done.")
-    time.sleep(50)
+    time.sleep(30)

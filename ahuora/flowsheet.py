@@ -42,8 +42,9 @@ class Flowsheet():
             core_api = openapi_client.CoreApi(api_client)
             try:
                 core_api.core_propertyinfo_partial_update(id, {
-                    value:value
+                    "value":value
                 })
+                
             except ApiException as e:
                 print("Exception when calling CoreApi->propertyinfo_partial_update: %s\n" % e)
     
